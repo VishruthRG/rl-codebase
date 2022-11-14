@@ -5,14 +5,15 @@ import keras
 import tensorflow as tf
 import random
 
-env = gym.make('Pong-v4', render_mode='human')
+
+env = gym.make('Pong-v4', render_mode = "human")
 
 init_frame = env.reset()
 # plt.imshow(init_frame)
 
 for i in range(10000):
-    action = random.sample([0,1,2,3], 1)[0]
-    obs, reward, terminated, truncated, info = env.step(action)
+    a = random.sample([0,1,2,3], 1)[0]
+    ns, r, d, _, info = env.step(a)
     env.render()
-    if terminated == True:
+    if d == True:
         env.reset()
