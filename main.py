@@ -5,6 +5,7 @@ import keras
 import tensorflow as tf
 import random
 
+
 env = gym.make('Pong-v4', render_mode = "human")
 
 init_frame = env.reset()
@@ -16,3 +17,4 @@ for i in range(10000):
     env.render()
     if d == True:
         env.reset()
+
