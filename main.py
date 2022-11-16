@@ -19,10 +19,11 @@ def process_frame(frame):
 
 for i in range(1):
     a = random.sample([0,1,2,3], 1)[0]
-    obs, rw, done, _, info = env.step(a)
-    obs = process_frame(obs)
-    plt.imshow(obs)
+    next_obs, rw, done, _, info = env.step(a)
+    next_obs = process_frame(next_obs)
+    # plt.imshow(obs)
     plt.show()
-    # env.render()
+    env.render()
     if done == True:
         env.reset()
+
