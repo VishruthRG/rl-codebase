@@ -1,21 +1,41 @@
-import gym
-import numpy as np
+import the_agent
+import environ_pong as environment
 import matplotlib.pyplot as plt
-import keras
-import tensorflow as tf
-import random
-import cv2
+import time
+from collections import deque
+import numpy as np
 
-env = gym.make('Pong-v4', render_mode = "human")
+name = 'PongDeterministic-v4'
 
-init_frame = env.reset()
+agent = the_agent.Agent(possible_actions=[0,2,3],starting_mem_len=50000,max_mem_len=750000,starting_epsilon = 1, learn_rate = .00025)
+env = environment.make_env(name,agent)
 
-def process_frame(frame):
-    frame = frame[30:-12,5:-4]
-    frame = np.average(frame,axis = 2)
-    frame = cv2.resize(frame,(84,84),interpolation = cv2.INTER_NEAREST)
-    frame = np.array(frame,dtype = np.uint8)
-    return frame
+last_100_avg = [-21]
+scores = deque(maxlen = 100)
+max_score = -21
+
+""" If testing:
+agent.model.load_weights('recent_weights.hdf5')
+agent.model_target.load_weights('recent_weights.hdf5')
+agent.epsilon = 0.0
+"""
+
+env.reset()
+
+for i in range(1000000):
+    timesteps = agent.total_timesteps
+    timee = time.time()
+    score = environment.play_episode(name, env, agent, debug = False) #set debug to true for rendering
+    scores.append(score)
+    if score > max_score:
+        max_score = score
+
+    print('\nEpisode: ' + str(i))
+    print('Steps: ' + str(agent.total_timesteps - timesteps))
+    print('Duration: ' + str(time.time() - timee))
+    print('Score: ' + str(score))
+    print('Max Score: ' + str(max_score))
+    print('Epsilon: ' + str(agent.epsilon))
 
 for i in range(1):
     a = random.sample([0,1,2,3], 1)[0]
@@ -27,3 +47,8 @@ for i in range(1):
     if done == True:
         env.reset()
 
+
+    if i%100==0 and i!=0:
+        last_100_avg.append(sum(scores)/len(scores))
+        plt.plot(np.arange(0,i+1,100),last_100_avg)
+        plt.show()
