@@ -22,7 +22,7 @@ agent.epsilon = 0.0
 
 env.reset()
 
-for i in range(1000000):
+for i in range(10000):
     timesteps = agent.total_timesteps
     timee = time.time()
     score = environment.play_episode(name, env, agent, debug = False) #set debug to true for rendering
