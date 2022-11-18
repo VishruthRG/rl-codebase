@@ -22,7 +22,7 @@ agent.epsilon = 0.0
 
 env.reset()
 
-for i in range(1000000):
+for i in range(10000):
     timesteps = agent.total_timesteps
     timee = time.time()
     score = environment.play_episode(name, env, agent, debug = False) #set debug to true for rendering
@@ -36,17 +36,6 @@ for i in range(1000000):
     print('Score: ' + str(score))
     print('Max Score: ' + str(max_score))
     print('Epsilon: ' + str(agent.epsilon))
-
-for i in range(1):
-    a = random.sample([0,1,2,3], 1)[0]
-    next_obs, rw, done, _, info = env.step(a)
-    next_obs = process_frame(next_obs)
-    # plt.imshow(obs)
-    plt.show()
-    env.render()
-    if done == True:
-        env.reset()
-
 
     if i%100==0 and i!=0:
         last_100_avg.append(sum(scores)/len(scores))

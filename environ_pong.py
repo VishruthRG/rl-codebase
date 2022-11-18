@@ -16,7 +16,7 @@ def initialize_new_game(name, env, agent):
         agent.memory.add_experience(starting_frame, dummy_reward, dummy_action, dummy_done)
 
 def make_env(name, agent):
-    env = gym.make(name, render_mode='human')
+    env = gym.make(name, render_mode='rgb_array')
     return env
 
 def take_step(name, env, agent, score, debug):
